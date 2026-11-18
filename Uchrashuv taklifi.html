@@ -1,0 +1,616 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Uchrashuv taklifi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600;1,700&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: one centered 440px card; six screens swap inside it.
+   Palette: burgundy on warm paper (as in the reference), full-bleed wine for the "yes" moment. */
+:root {
+  --bg: #e8e3d9;
+  --card: #f6f1e9;
+  --card-pink: #f1e5dd;
+  --panel: #fbf8f3;
+  --paper: #fffdf9;
+  --soft: #eee5d8;
+  --sel: #f9e9ea;
+  --fg: #2a1c1f;
+  --muted: #6c5a5d;
+  --line: #d8cdc0;
+  --accent: #9d2042;
+  --accent-text: #9d2042;
+  --on-accent: #fff6f2;
+  --rose: #ecc9cf;
+  --wine: #a02244;
+  --on-wine: #fbeee8;
+  --shadow: rgba(60, 30, 30, .22);
+  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #160f11; --card: #251a1d; --card-pink: #2b1c20; --panel: #2d2024; --paper: #332428;
+    --soft: #3a2a30; --sel: #3d2229; --fg: #f4e9e5; --muted: #bda9aa; --line: #4a373d;
+    --accent: #c23c5f; --accent-text: #ef8da4; --on-accent: #fff6f2; --rose: #5a2a37;
+    --wine: #8a1f3e; --on-wine: #fbeee8; --shadow: rgba(0, 0, 0, .5);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #160f11; --card: #251a1d; --card-pink: #2b1c20; --panel: #2d2024; --paper: #332428;
+  --soft: #3a2a30; --sel: #3d2229; --fg: #f4e9e5; --muted: #bda9aa; --line: #4a373d;
+  --accent: #c23c5f; --accent-text: #ef8da4; --on-accent: #fff6f2; --rose: #5a2a37;
+  --wine: #8a1f3e; --on-wine: #fbeee8; --shadow: rgba(0, 0, 0, .5);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding-block: 20px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background: var(--bg);
+  color: var(--fg);
+  font: 500 15px/1.55 var(--font-body);
+}
+button { font-family: inherit; }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent-text); outline-offset: 3px; }
+h1, h2 { margin: 0; font-weight: 600; }
+h1:focus, h2:focus { outline: none; }
+
+.ico { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.ico.fill { fill: currentColor; stroke: none; }
+
+/* Card */
+.card {
+  position: relative;
+  width: min(100%, 440px);
+  min-height: min(700px, calc(100dvh - 40px));
+  display: flex;
+  background: var(--card);
+  border-radius: 28px;
+  box-shadow: 0 34px 60px -34px var(--shadow);
+  overflow: hidden;
+  transition: background-color .5s;
+}
+.card[data-bg="pink"] { background: var(--card-pink); }
+.card[data-bg="wine"] { background: var(--wine); color: var(--on-wine); }
+
+.hearts, .burst { position: absolute; inset: 0; pointer-events: none; }
+.hearts { z-index: 0; }
+.burst { z-index: 3; }
+.hearts .h { position: absolute; display: block; width: var(--s); height: var(--s); color: var(--rose); opacity: .75; animation: float var(--d) ease-in-out infinite alternate; }
+.hearts .h svg { width: 100%; height: 100%; }
+.card[data-bg="wine"] .hearts .h { color: #e98aa0; opacity: .4; }
+@keyframes float { from { transform: translateY(0) rotate(-6deg); } to { transform: translateY(-12px) rotate(6deg); } }
+
+.b { position: absolute; display: block; width: var(--s); height: var(--s); color: #f4a9ba; animation: burst 1.7s cubic-bezier(.15, .7, .3, 1) both; }
+.b svg { width: 100%; height: 100%; }
+@keyframes burst {
+  0% { transform: translate(-50%, -50%) scale(.2); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(var(--r)) scale(1); opacity: 0; }
+}
+
+.screen {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 22px 24px;
+  animation: enter .55s cubic-bezier(.2, .7, .2, 1) both;
+}
+.screen.leaving { animation: leave .22s ease-in both; }
+@keyframes enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes leave { to { opacity: 0; transform: translateY(-8px); } }
+
+/* Type helpers */
+.eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-text); }
+.pill { display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 7px 16px; background: var(--card); }
+.label { margin: 0 0 10px; font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.h-step { margin: 26px 0 22px; font: 600 clamp(38px, 11vw, 46px)/1.05 var(--font-display); letter-spacing: -.01em; text-wrap: balance; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+  padding: 18px 20px; border: 0; border-radius: 999px; cursor: pointer;
+  background: var(--accent); color: var(--on-accent);
+  font: 800 13px/1 var(--font-body); letter-spacing: .12em; text-transform: uppercase;
+  box-shadow: 0 14px 26px -14px var(--accent);
+  transition: transform .2s, opacity .2s, box-shadow .2s;
+}
+.btn:hover:not([disabled]) { transform: translateY(-2px); }
+.btn:active:not([disabled]) { transform: translateY(0); }
+.btn[disabled] { opacity: .42; cursor: not-allowed; box-shadow: none; }
+.btn .ico { width: 16px; height: 16px; }
+.btn-light { background: #f6efe6; color: #6e1630; box-shadow: 0 14px 26px -16px rgba(0, 0, 0, .5); width: auto; padding-inline: 30px; }
+.cta { margin-top: auto; padding-top: 22px; }
+.link { background: none; border: 0; color: var(--muted); font: 700 12px var(--font-body); letter-spacing: .06em; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; padding: 8px; }
+
+/* 1. Intro */
+.intro { align-items: center; text-align: center; }
+.intro .script { margin: 26px 0 0; font: italic 500 20px var(--font-display); color: var(--muted); }
+.intro .name { margin: 2px 0 0; font: italic 600 clamp(58px, 19vw, 88px)/1 var(--font-display); letter-spacing: -.01em; color: var(--accent-text); }
+.heart-wrap { position: relative; width: min(56%, 180px); margin: auto; padding-block: 14px; }
+.heart-wrap::before { content: ""; position: absolute; inset: -18% -30%; background: radial-gradient(closest-side, var(--rose), transparent); opacity: .6; }
+.heart { position: relative; display: block; width: 100%; height: auto; overflow: visible; fill: var(--accent); filter: drop-shadow(0 12px 16px var(--shadow)); }
+.heart g { transform-box: view-box; transform-origin: 50px 86px; }
+.heart g, .heart use { transition: opacity .3s; }
+.heart.snap g { transition: transform .45s cubic-bezier(.2, .8, .2, 1), opacity .3s; }
+.heart.beat { animation: beat .7s ease-out; }
+@keyframes beat { 0% { transform: scale(1); } 35% { transform: scale(1.14); } 100% { transform: scale(1); } }
+.intro .lead { max-width: 30ch; margin: 0 0 24px; font-size: 14px; color: var(--muted); text-wrap: balance; }
+.slider { position: relative; width: 100%; height: 62px; overflow: hidden; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); box-shadow: inset 0 1px 4px rgba(0, 0, 0, .06); }
+.slider .fill { position: absolute; inset: 0 auto 0 0; width: 56px; background: linear-gradient(90deg, var(--rose), transparent); }
+.slider .fill.snap { transition: width .35s cubic-bezier(.2, .8, .2, 1); }
+.slider .hint { position: absolute; inset: 0; display: grid; place-items: center; padding-left: 52px; font-size: 11px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; pointer-events: none; }
+.handle { position: absolute; left: 4px; top: 4px; width: 52px; height: 52px; display: grid; place-items: center; border: 0; border-radius: 50%; background: var(--card); color: var(--accent-text); font-size: 22px; cursor: grab; touch-action: none; box-shadow: 0 5px 14px var(--shadow); }
+.handle.snap { transition: transform .35s cubic-bezier(.2, .8, .2, 1); }
+.handle:active { cursor: grabbing; }
+.from { margin: 20px 0 0; font-size: 11px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+
+/* 2. Question */
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.meter { padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; font: 700 12px/1 var(--font-body); font-variant-numeric: tabular-nums; color: var(--muted); }
+.panel {
+  flex: 1; display: flex; flex-direction: column; gap: 18px; margin-top: 18px;
+  padding: 30px 18px 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 26px;
+  box-shadow: 0 22px 40px -30px var(--shadow);
+}
+.panel .lead { margin: 0; text-align: center; font-size: 13.5px; color: var(--muted); text-wrap: balance; }
+.ask-title { margin-top: 6px; text-align: center; font: 600 clamp(36px, 10.5vw, 46px)/1.08 var(--font-display); text-wrap: balance; }
+.answers { position: relative; height: 230px; margin-top: auto; }
+.ha, .no {
+  position: absolute; top: 50%; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
+  transform: translateY(-50%) rotate(var(--rot, 0deg));
+  transition: left .5s cubic-bezier(.3, 1.2, .5, 1), top .5s cubic-bezier(.3, 1.2, .5, 1), width .5s cubic-bezier(.3, 1.2, .5, 1), height .5s cubic-bezier(.3, 1.2, .5, 1), transform .5s, font-size .5s;
+}
+.ha { left: 0; width: 46%; height: 54px; border: 0; border-radius: 999px; background: var(--accent); color: var(--on-accent); font: 800 13px/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; box-shadow: 0 16px 28px -14px var(--accent); }
+.ha .ico { width: 1.25em; height: 1.25em; }
+.no { left: 54%; z-index: 2; width: 46%; height: 54px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--fg); font: 700 14px/1.2 var(--font-body); }
+.no.bubble { width: auto; max-width: 52%; height: auto; padding: 9px 14px; border-radius: 18px; font-size: 12.5px; box-shadow: 0 10px 20px -10px var(--shadow); }
+.no.done { pointer-events: none; }
+
+/* 3. Yes */
+.win { align-items: center; justify-content: center; text-align: center; color: var(--on-wine); }
+.badge { position: relative; width: 116px; height: 116px; display: grid; place-items: center; border-radius: 50%; background: #f6efe6; color: var(--wine); font-size: 52px; box-shadow: 0 20px 40px -16px rgba(0, 0, 0, .45); }
+.badge::after { content: ""; position: absolute; inset: -14px; border: 1px solid rgba(255, 240, 235, .35); border-radius: 50%; animation: ring 2.4s ease-out infinite; }
+@keyframes ring { from { transform: scale(.85); opacity: 1; } to { transform: scale(1.3); opacity: 0; } }
+.win .eyebrow { margin: 44px 0 14px; color: var(--on-wine); opacity: .85; }
+.win h2 { font: italic 600 clamp(46px, 14vw, 60px)/1.05 var(--font-display); text-wrap: balance; }
+.win p { max-width: 28ch; margin: 16px 0 30px; font-size: 14.5px; opacity: .92; text-wrap: balance; }
+
+/* 4-5. Steps */
+.progress { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 800; letter-spacing: .1em; color: var(--muted); }
+.progress i { display: block; width: 24px; height: 6px; border-radius: 99px; background: var(--line); }
+.progress i.on { width: 42px; background: var(--accent); }
+.progress b { margin-left: 4px; font-weight: 800; }
+.opts { display: grid; gap: 10px; }
+.opt { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); color: var(--fg); font: inherit; text-align: left; cursor: pointer; transition: border-color .2s, background-color .2s, transform .2s; }
+.opt:hover { transform: translateY(-1px); }
+.opt b { display: block; font-weight: 800; font-size: 15px; }
+.opt .sub { display: flex; align-items: center; gap: 6px; margin-top: 2px; font-size: 12.5px; color: var(--muted); }
+.opt .sub .ico { width: 14px; height: 14px; }
+.opt .radio { width: 26px; height: 26px; display: grid; place-items: center; flex: none; border: 1.5px solid var(--line); border-radius: 50%; color: transparent; transition: background-color .2s, border-color .2s; }
+.opt .radio .ico { width: 14px; height: 14px; stroke-width: 3; }
+.opt[aria-checked="true"] { border-color: var(--accent); background: var(--sel); box-shadow: 0 0 0 1px var(--accent) inset; }
+.opt[aria-checked="true"] .radio { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.opt .lead-ico { width: 18px; height: 18px; color: var(--accent-text); }
+.opt.own { justify-content: flex-start; }
+.opt.own .grow { flex: 1; }
+.or { display: flex; align-items: center; gap: 12px; margin: 14px 0; font-size: 10.5px; font-weight: 800; letter-spacing: .2em; color: var(--muted); }
+.or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.custom { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 12px; }
+.custom label { display: grid; gap: 6px; min-width: 0; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.field, .note { width: 100%; min-width: 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); color: var(--fg); font: 600 14px var(--font-body); }
+.back { align-self: flex-start; display: inline-flex; align-items: center; gap: 7px; padding: 9px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--fg); font: 700 12.5px var(--font-body); cursor: pointer; }
+.back .ico { width: 14px; height: 14px; }
+.summary { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+.summary > .ico { width: 22px; height: 22px; color: var(--accent-text); }
+.summary b { display: block; font-weight: 800; }
+.summary .sub { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted); }
+.summary .sub .ico { width: 13px; height: 13px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { padding: 11px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); color: var(--fg); font: 700 13px/1.2 var(--font-body); cursor: pointer; transition: background-color .2s, color .2s, border-color .2s, transform .2s; }
+.chip:hover { transform: translateY(-1px); }
+.chip[aria-checked="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.note { display: block; min-height: 92px; resize: none; line-height: 1.5; font-weight: 500; }
+.count { margin: 6px 2px 0; text-align: right; font-size: 11px; font-variant-numeric: tabular-nums; color: var(--muted); }
+.hintline { margin: 10px 0 0; text-align: center; font-size: 12px; color: var(--muted); }
+
+/* 6. Letter */
+.letter { text-align: center; }
+.letter h2 { margin-top: 18px; font: italic 600 clamp(38px, 11.5vw, 48px)/1.05 var(--font-display); color: var(--accent-text); text-wrap: balance; }
+.letter-card { position: relative; margin-top: 24px; padding: 26px 22px 22px; overflow: hidden; text-align: left; background: var(--paper); border: 1px solid var(--line); border-radius: 26px; box-shadow: 0 22px 36px -28px var(--shadow); }
+.letter-card::before { content: ""; position: absolute; right: -36px; top: -36px; width: 124px; height: 124px; border-radius: 50%; background: var(--rose); opacity: .55; }
+.letter-card > .ico { position: absolute; right: 20px; top: 18px; width: 24px; height: 24px; color: var(--accent-text); }
+.letter-card .salute { position: relative; margin-bottom: 14px; font: 700 28px/1.1 var(--font-display); }
+.letter-card p { position: relative; margin: 0; font-size: 14.5px; }
+.details { position: relative; display: grid; gap: 11px; margin: 18px 0; padding: 16px; background: var(--soft); border-radius: 14px; }
+.details div { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; }
+.details .ico { width: 18px; height: 18px; color: var(--accent-text); }
+.sign { margin-top: 18px !important; font: italic 600 26px/1 var(--font-display) !important; color: var(--accent-text); }
+.letter .cta { padding-top: 20px; }
+.sharebox { margin: 14px 0 0; padding: 14px; text-align: left; font-size: 13px; line-height: 1.5; background: var(--panel); border: 1px dashed var(--line); border-radius: 14px; user-select: all; overflow-wrap: anywhere; }
+.status { margin: 10px 0 0; font-size: 12.5px; color: var(--muted); min-height: 1.5em; }
+.foot { margin: 14px 0 0; font-size: 10.5px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 17v4M17 19h4"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+</svg>
+
+<main class="card" id="card" data-bg="pink">
+  <div class="hearts" id="hearts" aria-hidden="true"></div>
+  <div class="burst" id="burst" aria-hidden="true"></div>
+
+  <!-- 1. Intro -->
+  <section class="screen intro" id="s-intro" data-bg="pink" aria-labelledby="intro-name">
+    <span class="eyebrow pill">Faqat siz uchun</span>
+    <p class="script">Bu alohida taklif</p>
+    <h1 class="name" id="intro-name" tabindex="-1" data-focus data-to></h1>
+    <div class="heart-wrap">
+      <svg class="heart snap" id="heart" viewBox="-10 -4 120 100" aria-hidden="true">
+        <defs>
+          <path id="hp" d="M50 86C20 62 2 44 2 26 2 12 13 3 26 3c10 0 19 6 24 15C55 9 64 3 74 3c13 0 24 9 24 23 0 18-18 36-48 60z"/>
+          <clipPath id="cl"><polygon points="-20,-10 52,-10 44,14 54,28 44,42 54,56 46,70 52,100 -20,100"/></clipPath>
+          <clipPath id="cr"><polygon points="120,-10 52,-10 44,14 54,28 44,42 54,56 46,70 52,100 120,100"/></clipPath>
+        </defs>
+        <g id="hl" clip-path="url(#cl)"><use href="#hp"/></g>
+        <g id="hr" clip-path="url(#cr)"><use href="#hp"/></g>
+        <use id="hw" href="#hp" opacity="0"/>
+      </svg>
+    </div>
+    <p class="lead">Yurakning ikki bo'lagini birlashtiring — kichkina savolim sizni kutyapti.</p>
+    <div class="slider" id="slider">
+      <div class="fill snap" id="fill"></div>
+      <div class="hint" id="hint">Ochish uchun suring</div>
+      <button type="button" class="handle snap" id="handle" aria-label="Ochish uchun o'ngga suring yoki Enter bosing"><svg class="ico fill"><use href="#i-heart"/></svg></button>
+    </div>
+    <p class="from">Kimdan: <span data-from></span></p>
+  </section>
+
+  <!-- 2. Question -->
+  <section class="screen" id="s-ask" hidden aria-labelledby="ask-title">
+    <div class="row">
+      <span class="eyebrow">Bitta kichkina savol</span>
+      <span class="meter" id="meter" aria-label="Mehr ballari">+000</span>
+    </div>
+    <div class="panel">
+      <p class="lead">Sizga kichkina taklifim bor — balki u bizning eng yoqimli xotiralarimizdan biriga aylanar.</p>
+      <h2 class="ask-title" id="ask-title" tabindex="-1" data-focus><span data-to></span>, sevishamizmi?</h2>
+      <div class="answers" id="answers">
+        <button type="button" class="ha" id="ha"><svg class="ico fill"><use href="#i-heart"/></svg>Ha</button>
+        <button type="button" class="no" id="no">Yo'q</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Yes -->
+  <section class="screen win" id="s-win" data-bg="wine" hidden aria-labelledby="win-title">
+    <div class="badge" id="badge"><svg class="ico fill"><use href="#i-heart"/></svg></div>
+    <span class="eyebrow">Rozilik qabul qilindi</span>
+    <h2 id="win-title" tabindex="-1" data-focus>Ajoyib, sevishamiz!</h2>
+    <p>Endi yuragingizdagini bilib olay: ikkita kichkina savol qoldi.</p>
+    <button type="button" class="btn btn-light" id="open-when">Davom etamiz <svg class="ico"><use href="#i-next"/></svg></button>
+  </section>
+
+  <!-- 4. Day and time -->
+  <section class="screen" id="s-when" hidden aria-labelledby="when-title">
+    <div class="row">
+      <span class="eyebrow">Yurakdan savol</span>
+      <div class="progress" aria-label="1-qadam, 2 tadan"><i class="on"></i><i></i><b>1/2</b></div>
+    </div>
+    <h2 class="h-step" id="when-title" tabindex="-1" data-focus>Qachon sevmoqchisiz?</h2>
+    <p class="label" id="when-label">Bittasini tanlang</p>
+    <div class="opts" id="slots" role="radiogroup" aria-labelledby="when-label"></div>
+    <div class="cta"><button type="button" class="btn" id="next" disabled>Keyingi <svg class="ico"><use href="#i-next"/></svg></button></div>
+  </section>
+
+  <!-- 5. Plan -->
+  <section class="screen" id="s-plan" hidden aria-labelledby="plan-title">
+    <div class="row">
+      <button type="button" class="back" id="back"><svg class="ico"><use href="#i-prev"/></svg>Orqaga</button>
+      <div class="progress" aria-label="2-qadam, 2 tadan"><i></i><i class="on"></i><b>2/2</b></div>
+    </div>
+    <h2 class="h-step" id="plan-title" tabindex="-1" data-focus>Meni qanchalik sevmoqchisiz?</h2>
+    <div class="summary">
+      <svg class="ico"><use href="#i-clock"/></svg>
+      <div><span class="sub">Qachon sevmoqchisiz?</span><b id="sum-when"></b></div>
+    </div>
+    <p class="label" id="plan-label">Qanchalik?</p>
+    <div class="chips" id="plans" role="radiogroup" aria-labelledby="plan-label"></div>
+    <div class="or" aria-hidden="true">YOKI</div>
+    <div class="opts" style="margin-bottom:22px">
+      <button type="button" class="opt" id="own-plan" role="radio" aria-checked="false"><b>O'zim bilgancha sevaman</b><span class="radio"><svg class="ico"><use href="#i-check"/></svg></span></button>
+    </div>
+    <label class="label" for="note">Sizdan bir-ikki og'iz — ixtiyoriy</label>
+    <textarea class="note" id="note" maxlength="300" placeholder="Qisqa javob yozishingiz mumkin..."></textarea>
+    <p class="count"><span id="count">0</span>/300</p>
+    <div class="cta">
+      <button type="button" class="btn" id="confirm" disabled>Javobni tasdiqlash <svg class="ico"><use href="#i-send"/></svg></button>
+      <p class="hintline" id="plan-hint">Davom etish uchun darajadan birini tanlang.</p>
+    </div>
+  </section>
+
+  <!-- 6. Letter -->
+  <section class="screen letter" id="s-letter" data-bg="pink" hidden aria-labelledby="letter-title">
+    <div><span class="eyebrow pill">Javobingiz tayyor</span></div>
+    <h2 id="letter-title" tabindex="-1" data-focus>Biz uchun kichkina xat</h2>
+    <div class="letter-card">
+      <svg class="ico fill"><use href="#i-heart"/></svg>
+      <div class="salute">Aziz <span data-to></span>,</div>
+      <p>Endi hammasi aniq: javobingizni oldim. Uni yuragimda asrab qo'yaman. Bu so'zlarni intiqlik bilan kutgandim.</p>
+      <div class="details">
+        <div><svg class="ico"><use href="#i-clock"/></svg><span>Qachon: <span id="l-when"></span></span></div>
+        <div><svg class="ico fill"><use href="#i-heart"/></svg><span>Qanchalik: <span id="l-plan"></span></span></div>
+      </div>
+      <p>Bu so'zlar biz uchun chiroyli hikoyaning boshlanishi bo'lishiga ishonaman.</p>
+      <p class="sign">— <span data-from></span> ♡</p>
+    </div>
+    <div class="cta">
+      <button type="button" class="btn" id="share"><svg class="ico"><use href="#i-share"/></svg><span id="share-label">Yaxshi xabarni ulashish</span></button>
+      <div id="sharebox" class="sharebox" hidden></div>
+      <p class="status" id="status" aria-live="polite"></p>
+      <p class="foot">Iliqlik bilan yaratildi</p>
+      <button type="button" class="link" id="restart">Boshidan ko'rish</button>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  /* ---- Sozlamalar: ismlar, kunlar, rejalar ---- */
+  const TO = 'Munisa';
+  const FROM = 'Sardor';
+  const WHENS = ['Hozir', 'Keyinroq', "O'zim aytaman"];
+  const PLANS = ['1-daraja · Sevmayman', '2-daraja · Sizni sevaman', '3-daraja · Juda juda sevaman'];
+  const OWN = "O'zim bilgancha sevaman";
+  const PHRASES = ['Aniqmi?', 'Juda iltimos qilsam-chi?', "Yana bir bor o'ylab ko'rasizmi?", 'Yuragim sizniki-ku...', "Bir marta sinab ko'ring-chi?", 'Yuragim sinib ketadi-ku.', 'Mayli, men baribir sevaman.'];
+  const SPOTS = [[2, 78, -8], [44, 12, 6], [4, 16, -5], [42, 82, 5], [22, 88, -4], [40, 68, 7], [6, 50, -6]];
+  const MONTHS = ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr'];
+  const DAYS = ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'];
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pad = n => String(n).padStart(2, '0');
+  const fmtDate = iso => {
+    const [y, m, d] = iso.split('-').map(Number);
+    return `${d}-${MONTHS[m - 1]}, ${DAYS[new Date(y, m - 1, d).getDay()]}`;
+  };
+
+  document.querySelectorAll('[data-to]').forEach(e => { e.textContent = TO; });
+  document.querySelectorAll('[data-from]').forEach(e => { e.textContent = FROM; });
+
+  const card = $('#card');
+  const state = { slot: null, plan: null, note: '' };
+  let current = 'intro';
+
+  /* ---- Ekranlar ---- */
+  function go(name) {
+    const from = $('#s-' + current), to = $('#s-' + name);
+    if (from === to) return;
+    const swap = () => {
+      from.hidden = true; from.classList.remove('leaving');
+      to.hidden = false;
+      card.dataset.bg = to.dataset.bg || 'base';
+      current = name;
+      const h = to.querySelector('[data-focus]');
+      if (h) h.focus({ preventScroll: true });
+      window.scrollTo(0, 0);
+    };
+    if (reduce()) { swap(); return; }
+    from.classList.add('leaving');
+    setTimeout(swap, 220);
+  }
+
+  /* ---- Fon yuraklari ---- */
+  const hearts = $('#hearts');
+  for (let i = 0; i < 9; i++) {
+    const e = document.createElement('i');
+    e.className = 'h';
+    e.innerHTML = '<svg class="ico fill"><use href="#i-heart"/></svg>';
+    e.style.cssText = `left:${Math.random() * 92}%;top:${Math.random() * 92}%;--s:${10 + Math.random() * 12}px;--d:${3 + Math.random() * 3}s;animation-delay:${-Math.random() * 4}s`;
+    hearts.append(e);
+  }
+
+  /* ---- 1. Slayder ---- */
+  const track = $('#slider'), handle = $('#handle'), fill = $('#fill'), hint = $('#hint');
+  const heart = $('#heart'), hl = $('#hl'), hr = $('#hr'), hw = $('#hw');
+  let p = 0, dragging = false, off = 0, unlocked = false;
+  const maxX = () => Math.max(1, track.clientWidth - handle.offsetWidth - 8);
+
+  function setP(v) {
+    p = Math.min(1, Math.max(0, v));
+    const x = p * maxX(), e = 1 - p;
+    handle.style.transform = `translateX(${x}px)`;
+    fill.style.width = (x + 56) + 'px';
+    hint.style.opacity = String(Math.max(0, 1 - p * 1.6));
+    hl.style.transform = `translate(${-20 * e}px,${7 * e}px) rotate(${-14 * e}deg)`;
+    hr.style.transform = `translate(${20 * e}px,${7 * e}px) rotate(${14 * e}deg)`;
+  }
+  const snap = on => [heart, handle, fill].forEach(el => el.classList.toggle('snap', on));
+
+  handle.addEventListener('pointerdown', e => {
+    if (unlocked) return;
+    dragging = true; snap(false);
+    off = e.clientX - p * maxX();
+    handle.setPointerCapture(e.pointerId);
+  });
+  handle.addEventListener('pointermove', e => { if (dragging) setP((e.clientX - off) / maxX()); });
+  const release = () => {
+    if (!dragging) return;
+    dragging = false; snap(true);
+    if (p >= 0.9) unlock(); else setP(0);
+  };
+  handle.addEventListener('pointerup', release);
+  handle.addEventListener('pointercancel', release);
+  handle.addEventListener('keydown', e => {
+    if (unlocked || !['ArrowRight', 'Enter', ' '].includes(e.key)) return;
+    e.preventDefault(); snap(true);
+    setP(p + 0.5);
+    if (p >= 0.9) unlock();
+  });
+  function unlock() {
+    unlocked = true; setP(1);
+    hw.setAttribute('opacity', '1'); hl.style.opacity = '0'; hr.style.opacity = '0';
+    heart.classList.add('beat');
+    setTimeout(() => go('ask'), reduce() ? 0 : 750);
+  }
+  function resetSlider() {
+    unlocked = false; snap(true); heart.classList.remove('beat');
+    hw.setAttribute('opacity', '0'); hl.style.opacity = '1'; hr.style.opacity = '1';
+    setP(0);
+  }
+  setP(0);
+
+  /* ---- 2. Savol ---- */
+  const ha = $('#ha'), no = $('#no'), meter = $('#meter');
+  const MAXN = PHRASES.length;
+  let attempts = 0, lastTry = 0;
+
+  function layoutAsk() {
+    if (attempts === 0) {
+      ha.style.left = '0%'; ha.style.width = '46%'; ha.style.height = '54px'; ha.style.fontSize = '13px';
+      return;
+    }
+    const w = Math.min(100, 46 + 9 * attempts);
+    ha.style.width = w + '%';
+    ha.style.left = ((100 - w) / 2) + '%';
+    ha.style.height = (54 + 8 * attempts) + 'px';
+    ha.style.fontSize = (13 + attempts * 0.8) + 'px';
+  }
+  function dodge() {
+    const now = performance.now();
+    if (now - lastTry < 380 || attempts >= MAXN) return;
+    lastTry = now; attempts++;
+    const s = SPOTS[(attempts - 1) % SPOTS.length];
+    no.classList.add('bubble');
+    no.textContent = PHRASES[attempts - 1];
+    no.style.left = s[0] + '%'; no.style.top = s[1] + '%'; no.style.setProperty('--rot', s[2] + 'deg');
+    meter.textContent = '+' + pad(attempts * 10).padStart(3, '0');
+    layoutAsk();
+    if (attempts >= MAXN) no.classList.add('done');
+  }
+  function resetAsk() {
+    attempts = 0;
+    no.classList.remove('bubble', 'done');
+    no.textContent = "Yo'q";
+    no.style.left = '54%'; no.style.top = '50%'; no.style.setProperty('--rot', '0deg');
+    meter.textContent = '+000';
+    layoutAsk();
+  }
+  no.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') dodge(); });
+  no.addEventListener('pointerdown', e => { e.preventDefault(); dodge(); });
+  no.addEventListener('click', e => { if (e.detail === 0) dodge(); });
+  ha.addEventListener('click', () => { go('win'); setTimeout(burst, reduce() ? 0 : 330); });
+  resetAsk();
+
+  /* ---- 3. Rozilik ---- */
+  function burst() {
+    if (reduce()) return;
+    const layer = $('#burst'), r = $('#badge').getBoundingClientRect(), c = card.getBoundingClientRect();
+    const cx = r.left - c.left + r.width / 2, cy = r.top - c.top + r.height / 2;
+    for (let i = 0; i < 26; i++) {
+      const el = document.createElement('span');
+      el.className = 'b';
+      el.innerHTML = '<svg class="ico fill"><use href="#i-heart"/></svg>';
+      const a = Math.random() * Math.PI * 2, d = 90 + Math.random() * 190;
+      el.style.cssText = `left:${cx}px;top:${cy}px;--x:${Math.cos(a) * d}px;--y:${Math.sin(a) * d - 60}px;--s:${10 + Math.random() * 16}px;--r:${Math.random() * 120 - 60}deg;animation-delay:${Math.random() * 0.25}s`;
+      layer.append(el);
+      setTimeout(() => el.remove(), 2200);
+    }
+  }
+  $('#open-when').addEventListener('click', () => go('when'));
+
+  /* ---- 4. Qachon sevmoqchisiz ---- */
+  const slotsEl = $('#slots'), next = $('#next');
+  const slotBtns = WHENS.map(s => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'opt';
+    b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false');
+    b.innerHTML = `<b>${s}</b><span class="radio"><svg class="ico"><use href="#i-check"/></svg></span>`;
+    b.addEventListener('click', () => {
+      slotBtns.forEach(x => x.setAttribute('aria-checked', String(x === b)));
+      state.slot = s; next.disabled = false;
+    });
+    slotsEl.append(b);
+    return b;
+  });
+  next.addEventListener('click', () => {
+    $('#sum-when').textContent = state.slot;
+    go('plan');
+  });
+
+  /* ---- 5. Reja ---- */
+  const plansEl = $('#plans'), confirmBtn = $('#confirm'), note = $('#note');
+  const ownPlan = $('#own-plan');
+  const choosePlan = (name, el) => {
+    state.plan = name;
+    [...plansEl.children, ownPlan].forEach(c => c.setAttribute('aria-checked', String(c === el)));
+    confirmBtn.disabled = false; $('#plan-hint').hidden = true;
+  };
+  PLANS.forEach(name => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.textContent = name;
+    b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false');
+    b.addEventListener('click', () => choosePlan(name, b));
+    plansEl.append(b);
+  });
+  ownPlan.addEventListener('click', () => choosePlan(OWN, ownPlan));
+  note.addEventListener('input', () => { state.note = note.value.trim(); $('#count').textContent = note.value.length; });
+  $('#back').addEventListener('click', () => go('when'));
+  confirmBtn.addEventListener('click', () => {
+    $('#l-when').textContent = state.slot;
+    $('#l-plan').textContent = state.plan;
+    go('letter');
+  });
+
+  /* ---- 6. Xat va ulashish ---- */
+  const shareLabel = $('#share-label'), box = $('#sharebox'), status = $('#status');
+  $('#share').addEventListener('click', async () => {
+    const text = `${FROM}, javobim: qachon sevmoqchiman — ${state.slot}. Qanchalik — ${state.plan}.${state.note ? ' Izoh: ' + state.note : ''} — ${TO}`;
+    box.textContent = text; box.hidden = false;
+    let ok = false;
+    try { await navigator.clipboard.writeText(text); ok = true; } catch (err) { ok = false; }
+    if (!ok) {
+      const range = document.createRange(); range.selectNodeContents(box);
+      const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+    }
+    shareLabel.textContent = ok ? 'Nusxa olindi' : 'Matnni nusxalang';
+    status.textContent = ok ? `Xabar nusxalandi. Uni ${FROM}ga yuboring.` : `Matnni belgilab nusxa oling va ${FROM}ga yuboring.`;
+  });
+  $('#restart').addEventListener('click', () => {
+    state.slot = null; state.plan = null; state.note = '';
+    note.value = ''; $('#count').textContent = '0';
+    slotBtns.forEach(b => b.setAttribute('aria-checked', 'false'));
+    [...plansEl.children, ownPlan].forEach(c => c.setAttribute('aria-checked', 'false'));
+    next.disabled = true; confirmBtn.disabled = true; $('#plan-hint').hidden = false;
+    box.hidden = true; status.textContent = ''; shareLabel.textContent = 'Yaxshi xabarni ulashish';
+    resetSlider(); resetAsk();
+    go('intro');
+  });
+})();
+</script>
+
+</body></html>
